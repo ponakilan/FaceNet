@@ -4,7 +4,13 @@ import random
 import pandas as pd
 
 
-def get_files_list(root_dir):
+def get_files_list(root_dir: str) -> list:
+    """
+    Generates a nested list of file paths of files inside the subfolders of a given directory
+    where each sublist corresponds to a single directory.
+    :param root_dir: root directory which contains subfolders of images
+    :return: nested list of file paths of the files present in the subfolders of the root directory
+    """
     list_root_dir = os.listdir(root_dir)
 
     # Getting the complete path of the child directories
@@ -23,12 +29,19 @@ def get_files_list(root_dir):
     return files
 
 
-def generate_dataset(root_dir):
+def generate_dataset(root_dir: str) -> pd.DataFrame:
+    """
+    Generates triplets of images (anchor, positive, negative) from the images present in the given directory
+    to train FaceNet with triplet loss function.
+    :param root_dir: root directory which contains subfolders of images
+    :return: pandas dataframe containing triplets of file paths (anchor, positive, negative)
+    """
     files = get_files_list(root_dir)
 
     anchor_files, positive_files, negative_files = [], [], []
     while len(files) > 0:
 
+        # Stop if there are only two folders and one of them is empty
         if len(files) == 2 and len(files[0]) == 0 or len(files[1]) == 0:
             break
 
