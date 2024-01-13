@@ -4,8 +4,32 @@ import functools
 
 
 class TripletFaceDataset(Dataset):
-    def __init__(self, dataframe, transform=None):
-        self.dataframe = dataframe
+    """
+        Custom PyTorch dataset class for loading triplets of images for face recognition tasks.
+
+        Args:
+            triplets_dataframe (pandas.DataFrame): Pandas dataframe containing the paths of triplets.
+            transform (callable, optional): A function/transform to be applied to each image triplet.
+                                           Default is None.
+
+        Methods:
+            __len__(): Returns the number of triplets in the dataset.
+            get_image(image_path): Reads an image from the specified path and applies the specified
+                                   transformation (if any).
+            __getitem__(idx): Retrieves and returns the anchor, positive, and negative images for
+                              the triplet at the specified index.
+
+        Attributes:
+            dataframe (pandas.DataFrame): The input dataframe containing triplet information.
+            transform (callable): The transformation to be applied on image retrieval.
+
+        Note:
+            This dataset assumes that the input dataframe has columns named 'anchor', 'positive',
+            and 'negative' containing file paths for the anchor, positive, and negative images
+            respectively.
+        """
+    def __init__(self, triplets_dataframe, transform=None):
+        self.dataframe = triplets_dataframe
         self.transform = transform
 
     def __len__(self):

@@ -6,10 +6,23 @@ import pandas as pd
 
 def get_files_list(root_dir: str) -> list:
     """
-    Generates a nested list of file paths of files inside the subfolders of a given directory
+    Generates a nested list of file paths for files inside the subfolders of a given directory,
     where each sublist corresponds to a single directory.
-    :param root_dir: root directory which contains subfolders of images
-    :return: nested list of file paths of the files present in the subfolders of the root directory
+
+    Args:
+        root_dir (str): Root directory containing subfolders with files.
+
+    Returns:
+        list: Nested list of file paths of the files present in the subfolders of the root directory.
+
+    Example:
+        # Getting the list of files from a root directory\n
+        root_directory = "/path/to/root_directory"\n
+        files_list = get_files_list(root_directory)\n
+        print(files_list)\n
+
+        Output:
+        [['/path/to/root_directory/subfolder1/file1', '/path/to/root_directory/subfolder1/file2', ...], ...]
     """
     list_root_dir = os.listdir(root_dir)
 
@@ -32,9 +45,19 @@ def get_files_list(root_dir: str) -> list:
 def generate_dataset(root_dir: str) -> pd.DataFrame:
     """
     Generates triplets of images (anchor, positive, negative) from the images present in the given directory
-    to train FaceNet with triplet loss function.
-    :param root_dir: root directory which contains subfolders of images
-    :return: pandas dataframe containing triplets of file paths (anchor, positive, negative)
+    for training FaceNet with a triplet loss function.
+
+    Args:
+        root_dir (str): Root directory containing subfolders of images.
+
+    Returns:
+        pandas.DataFrame: Dataframe containing triplets of file paths (anchor, positive, negative).
+
+    Example:
+        # Generating a dataset of triplets from a root directory
+        root_directory = "/path/to/root_directory" \n
+        dataset = generate_dataset(root_directory) \n
+        print(dataset.head())
     """
     files = get_files_list(root_dir)
 
