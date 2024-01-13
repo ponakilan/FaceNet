@@ -27,7 +27,7 @@ class TripletFaceDataset(Dataset):
             This dataset assumes that the input dataframe has columns named 'anchor', 'positive',
             and 'negative' containing file paths for the anchor, positive, and negative images
             respectively.
-        """
+    """
     def __init__(self, triplets_dataframe, transform=None):
         self.dataframe = triplets_dataframe
         self.transform = transform
