@@ -1,4 +1,4 @@
-from . import accuracy_score
+from .accuracy_score import accuracy_score
 import torch
 
 
@@ -8,6 +8,7 @@ def train_one_epoch(model, optimizer, loss_fn, dataloader, device):
 
     for i, data in enumerate(dataloader):
         anchor, positive, negative = data[0].to(dtype=torch.float32, device=device), data[1].to(dtype=torch.float32, device=device), data[2].to(dtype=torch.float32, device=device)
+
         optimizer.zero_grad()
 
         outputs = model(anchor, positive, negative)
@@ -20,7 +21,7 @@ def train_one_epoch(model, optimizer, loss_fn, dataloader, device):
         optimizer.step()
 
         running_loss += loss.item()
-        if i % 100 == 99:
+        if i % 10 == 9:
             last_loss = running_loss / 100
             print('  batch {} loss: {} accuracy: {}'.format(i + 1, last_loss, accuracy))
             running_loss = 0.
