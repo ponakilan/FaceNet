@@ -1,4 +1,4 @@
-from helpers import accuracy_score
+from . import accuracy_score
 
 
 def train_one_epoch(model, optimizer, loss_fn, dataloader, device):
