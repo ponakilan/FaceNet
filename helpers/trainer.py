@@ -1,4 +1,5 @@
 from . import accuracy_score
+import torch
 
 
 def train_one_epoch(model, optimizer, loss_fn, dataloader, device):
@@ -6,7 +7,7 @@ def train_one_epoch(model, optimizer, loss_fn, dataloader, device):
     last_loss = 0.0
 
     for i, data in enumerate(dataloader):
-        anchor, positive, negative = data[0].to(device), data[1].to(device), data[2].to(device)
+        anchor, positive, negative = data[0].to(dtype=torch.float, device=device), data[1].to(dtype=torch.float, device=device), data[2].to(dtype=torch.float, device=device)
         optimizer.zero_grad()
 
         outputs = model(anchor, positive, negative)
