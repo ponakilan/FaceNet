@@ -16,9 +16,9 @@ def get_files_list(root_dir: str) -> list:
         list: Nested list of file paths of the files present in the subfolders of the root directory.
 
     Example:
-        # Getting the list of files from a root directory\n
-        root_directory = "/path/to/root_directory"\n
-        files_list = get_files_list(root_directory)\n
+        # Getting the list of files from a root directory \n
+        root_directory = "/path/to/root_directory" \n
+        files_list = get_files_list(root_directory) \n
         print(files_list)\n
 
         Output:
