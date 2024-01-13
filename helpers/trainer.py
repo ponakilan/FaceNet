@@ -26,4 +26,4 @@ def train_one_epoch(model, optimizer, loss_fn, dataloader, device):
             print('  batch {} loss: {} accuracy: {}'.format(i + 1, last_loss, accuracy))
             running_loss = 0.
 
-        return model, pos_dist, neg_dist, last_loss, accuracy
+    return model, pos_dist, neg_dist, last_loss, accuracy

@@ -1,4 +1,4 @@
-from torchvision import io
+from PIL import Image
 from torch.utils.data import Dataset
 import functools
 
@@ -37,7 +37,7 @@ class TripletFaceDataset(Dataset):
 
     @functools.lru_cache(maxsize=128)
     def get_image(self, image_path):
-        image = io.read_image(image_path)
+        image = Image.open(image_path)
         return self.transform(image)
 
     def __getitem__(self, idx):
