@@ -2,7 +2,7 @@ from .accuracy_score import accuracy_score
 import torch
 
 
-def train_one_epoch(model, optimizer, loss_fn, dataloader, device):
+def train_one_epoch(model, optimizer, loss_fn, dataloader, device, log_batch):
     running_loss = 0.0
     last_loss = 0.0
 
@@ -21,8 +21,8 @@ def train_one_epoch(model, optimizer, loss_fn, dataloader, device):
         optimizer.step()
 
         running_loss += loss.item()
-        if i % 10 == 9:
-            last_loss = running_loss / 100
+        if i % log_batch == log_batch - 1:
+            last_loss = running_loss / log_batch
             print('  batch {} loss: {} accuracy: {}'.format(i + 1, last_loss, accuracy))
             running_loss = 0.
 
