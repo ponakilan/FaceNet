@@ -45,7 +45,6 @@ class TripletFaceDataset(Dataset):
 
     def __getitem__(self, idx):
         data = self.dataframe.iloc[idx]
-        print(idx)
         anchor = self.get_image(data['anchor'])
         positive = self.get_image(data['positive'])
         negative = self.get_image(data['negative'])
