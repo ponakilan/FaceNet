@@ -30,7 +30,8 @@ def train_one_epoch(model, optimizer, lr, momentum, margin, train_loader, log_in
 
     running_loss = 0.
     last_loss = 0.
-    for i, data in enumerate(train_loader):
+    for i in range(len(train_loader)):
+        data = next(iter(train_loader))
         anchor, positive, negative = data
         anchor = model(anchor.to(device))
         positive = model(positive.to(device))

@@ -1,7 +1,7 @@
 from PIL import Image
 from torch.utils.data import Dataset
 import functools
-from FaceNet.models.mtcnn import MTCNN
+from models.mtcnn import MTCNN
 
 
 class TripletFaceDataset(Dataset):
@@ -38,13 +38,15 @@ class TripletFaceDataset(Dataset):
     def __len__(self):
         return self.dataframe.shape[0]
 
-    @functools.lru_cache(maxsize=128)
     def get_image(self, image_path):
         image = self.mtcnn(Image.open(image_path))
+        if image is None:
+            print('Image is none.')
         return self.transform(image)
 
     def __getitem__(self, idx):
         data = self.dataframe.iloc[idx]
+        print(idx)
         anchor = self.get_image(data['anchor'])
         positive = self.get_image(data['positive'])
         negative = self.get_image(data['negative'])
