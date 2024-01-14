@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 
 
 class TripletLoss(torch.nn.Module):
@@ -16,14 +17,23 @@ class TripletLoss(torch.nn.Module):
         return losses.mean()
 
 
-def train_one_epoch(model, optimizer, lr, momentum, margin, train_loader, log_interval, device):
+def log_distance(anchor, positive, negative, batch_size, run):
+    anchor, positive, negative = anchor.detach().cpu(), positive.detach().cpu(), negative.detach().cpu()
+    for i in range(batch_size):
+        run.log({"Positive_distance": np.linalg.norm(anchor[i] - positive[i])})
+        run.log({"Negative_distance": np.linalg.norm(anchor[i] - negative[i])})
+
+
+def train_one_epoch(model, optimizer, lr, momentum, margin, train_loader, log_interval, device, run=None):
     model.train(True)
 
     # Instantiate the optimizer
     if optimizer == 'adam':
         optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-    else:
+    elif optimizer == 'sgd':
         optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=momentum)
+    else:
+        raise ValueError('Only Adam and SGD optimizers are supported.')
 
     # Instantiate the loss function
     loss_fn = TripletLoss(margin=margin)
@@ -46,6 +56,9 @@ def train_one_epoch(model, optimizer, lr, momentum, margin, train_loader, log_in
         running_loss += loss.item()
         if i % log_interval == 0:
             last_loss = running_loss / log_interval
+            if run is not None:
+                run.log({"Training_loss": last_loss})
+                log_distance(anchor, positive, negative, anchor.shape[0], run)
             print(f'\tBatch: {i}, Loss: {last_loss:.4f}')
             running_loss = 0.
 
