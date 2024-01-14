@@ -1,6 +1,7 @@
 from PIL import Image
 from torch.utils.data import Dataset
 import functools
+from models.mtcnn import MTCNN
 
 
 class TripletFaceDataset(Dataset):
@@ -28,16 +29,18 @@ class TripletFaceDataset(Dataset):
             and 'negative' containing file paths for the anchor, positive, and negative images
             respectively.
     """
-    def __init__(self, triplets_dataframe, transform=None):
+
+    def __init__(self, triplets_dataframe, image_size, transform=None):
         self.dataframe = triplets_dataframe
         self.transform = transform
+        self.mtcnn = MTCNN(image_size=image_size)
 
     def __len__(self):
         return self.dataframe.shape[0]
 
     @functools.lru_cache(maxsize=128)
     def get_image(self, image_path):
-        image = Image.open(image_path)
+        image = self.mtcnn(Image.open(image_path))
         return self.transform(image)
 
     def __getitem__(self, idx):

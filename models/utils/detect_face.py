@@ -13,6 +13,7 @@ try:
 except:
     pass
 
+
 def fixed_batch_process(im_data, model):
     batch_size = 512
     out = []
@@ -22,7 +23,9 @@ def fixed_batch_process(im_data, model):
 
     return tuple(torch.cat(v, dim=0) for v in zip(*out))
 
+
 def detect_face(imgs, minsize, pnet, rnet, onet, threshold, factor, device):
+    print(imgs)
     if isinstance(imgs, (np.ndarray, torch.Tensor)):
         if isinstance(imgs,np.ndarray):
             imgs = torch.as_tensor(imgs.copy(), device=device)
