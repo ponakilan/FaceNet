@@ -17,14 +17,14 @@ class TripletLoss(torch.nn.Module):
         return losses.mean()
 
 
-def log_distance(anchor, positive, negative, batch_size, run):
+def get_distance(anchor, positive, negative):
     anchor, positive, negative = anchor.detach().cpu(), positive.detach().cpu(), negative.detach().cpu()
-    for i in range(batch_size):
-        run.log({"Positive_distance": np.linalg.norm(anchor[i] - positive[i])})
-        run.log({"Negative_distance": np.linalg.norm(anchor[i] - negative[i])})
+    pos_dist = np.linalg.norm(anchor[0] - positive[0])
+    neg_dist = np.linalg.norm(anchor[0] - negative[0])
+    return pos_dist, neg_dist
 
 
-def train_one_epoch(model, optimizer, lr, momentum, margin, train_loader, log_interval, device, run=None):
+def train_one_epoch(model, optimizer, lr, momentum, margin, train_loader, epoch, log_interval, device, run=None):
     model.train(True)
 
     # Instantiate the optimizer
@@ -56,10 +56,11 @@ def train_one_epoch(model, optimizer, lr, momentum, margin, train_loader, log_in
         running_loss += loss.item()
         if i % log_interval == 0:
             last_loss = running_loss / log_interval
+            pos_dist, neg_dist = get_distance(anchor, positive, negative)
             if run is not None:
-                run.log({"Training_loss": last_loss})
-                log_distance(anchor, positive, negative, anchor.shape[0], run)
+                run.log({"Training_loss": last_loss, "Positive_dist": pos_dist, "Negative_dist": neg_dist})
             print(f'\tBatch: {i}, Loss: {last_loss:.4f}')
+            torch.save(model.state_dict(), f"model_{epoch}_{i}_{last_loss}_{pos_dist}_{neg_dist}.pt")
             running_loss = 0.
 
     return model, last_loss
