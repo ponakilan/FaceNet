@@ -1,7 +1,7 @@
 from PIL import Image
 from torch.utils.data import Dataset
 import functools
-from models.mtcnn import MTCNN
+from FaceNet.models.mtcnn import MTCNN
 
 
 class TripletFaceDataset(Dataset):
