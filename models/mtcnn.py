@@ -516,5 +516,5 @@ def prewhiten(x):
     std = x.std()
     std_adj = std.clamp(min=1.0 / (float(x.numel()) ** 0.5))
     y = (x - mean) / std_adj
-    return y
+    return x
 
