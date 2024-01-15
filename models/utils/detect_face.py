@@ -26,10 +26,10 @@ def fixed_batch_process(im_data, model):
 
 def detect_face(imgs, minsize, pnet, rnet, onet, threshold, factor, device):
     if isinstance(imgs, (np.ndarray, torch.Tensor)):
-        if isinstance(imgs,np.ndarray):
+        if isinstance(imgs, np.ndarray):
             imgs = torch.as_tensor(imgs.copy(), device=device)
 
-        if isinstance(imgs,torch.Tensor):
+        if isinstance(imgs, torch.Tensor):
             imgs = torch.as_tensor(imgs, device=device)
 
         if len(imgs.shape) == 3:
@@ -41,8 +41,6 @@ def detect_face(imgs, minsize, pnet, rnet, onet, threshold, factor, device):
             raise Exception("MTCNN batch processing only compatible with equal-dimension images.")
         imgs = np.stack([np.uint8(img) for img in imgs])
         imgs = torch.as_tensor(imgs.copy(), device=device)
-
-    
 
     model_dtype = next(pnet.parameters()).dtype
     imgs = imgs.permute(0, 3, 1, 2).type(model_dtype)
@@ -89,7 +87,6 @@ def detect_face(imgs, minsize, pnet, rnet, onet, threshold, factor, device):
 
     # NMS within each scale + image
     boxes, image_inds = boxes[scale_picks], image_inds[scale_picks]
-
 
     # NMS within each image
     pick = batched_nms(boxes[:, :4], boxes[:, 4], image_inds, 0.7)

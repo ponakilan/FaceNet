@@ -507,7 +507,8 @@ class MTCNN(nn.Module):
 
 
 def fixed_image_standardization(image_tensor):
-    processed_tensor = (image_tensor - 127.5) / 128.0
+    # processed_tensor = (image_tensor - 127.5) / 128.0
+    processed_tensor = image_tensor  # Skipping image standardization
     return processed_tensor
 
 
