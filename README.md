@@ -21,7 +21,7 @@ Setup
 ### To set up and run the FaceNet project, follow these steps:
 
 Clone the repository to your local machine:  
-`$ git clone https://github.com/your-username/FaceNet.git`  
+`$ git clone https://github.com/ponakilan/FaceNet.git`  
 `$ cd FaceNet`
 
 Install the required dependencies:  
